@@ -1,0 +1,51 @@
+<ul>
+    <li><a href="/" class="btn">Home</a></li>
+    <% if(!authenticated) { %> 
+        <li><a href="/auth/signup" class="btn">Sign up</a></li>
+        <li><a href="/auth/login" class="btn">Log in</a></li>
+    <% } else { %>
+        <li><a href="/auth/logout" class="btn">Log out</a></li>
+    <% } %>
+</ul>
+<style>
+    body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 90vh;
+    }
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    li {
+        list-style-type: none;
+    }
+    ul {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 2em;
+        height: 50px;
+        align-items: center;
+    }
+    .btn {
+        cursor: pointer;
+        color: black;
+        font-weight: bold;
+        padding: .3em .6em;
+        text-decoration: none;
+        font-family: 'Courier New', Courier, monospace;
+        border: 1px solid black;
+        border-radius: 9px;
+    }
+    h1 {
+        text-align: center;
+    }
+    div {
+        display: flex;
+        flex-direction: column;
+    }
+</style>
