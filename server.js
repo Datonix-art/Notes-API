@@ -1,19 +1,17 @@
 // imports
 import express from 'express';
 import cors from 'cors';
-// import morgan from 'morgan';
 import dotenv from 'dotenv';
 import path from 'node:path';
 import session from 'express-session';
 import errorHandler from './middleware/errorHandler.middleware.js';
 import requestLogger from './middleware/logger.middleware.js';
-import MongoStore from 'connect-mongo'; 
 
 // environmental variables
 dotenv.config();
+
 const port = process.env.PORT;
 const session_secret_key = process.env.SESSION_KEY
-const mongo_uri = process.env.MONGO_URI
 
 // express app instance
 const app = express();
@@ -25,12 +23,8 @@ app.use(session({
     saveUninitialized: false, 
     cookie: {
         httpOnly: true,
-        secure: false, 
-    },
-    store: MongoStore.create({
-        mongoUrl: mongo_uri,
-        collectionName: 'sessions',
-    })
+        secure: false, // set true only when served as HTTPS
+    }
 }))
 
 // ejs config
@@ -44,7 +38,6 @@ app.use(express.static(path.join(path.resolve(), 'public')))
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: true })); 
 app.use(cors()); 
-// app.use(morgan('dev'))
 app.use(requestLogger)
 
 // routes
@@ -55,7 +48,7 @@ app.get('/', (req, res) => {
 import notesRoutes from './routes/notes.routes.js';
 app.use('/api/notes', notesRoutes)
 
-import authRouter from './routes/auth.routes.js';
+import authRouter from './routes/auth.routes.js';   
 app.use('/auth', authRouter)
 
 // error handling middleware

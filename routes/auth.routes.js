@@ -1,14 +1,13 @@
-import  { Router } from 'express';
+import { Router } from 'express';
 import { signup, login, logout } from '../controllers/auth.controller.js';
-import protectRoute from '../middleware/auth.middleware.js'
 
 const authRouter = Router();
 
-authRouter.get('/signup', protectRoute, (req, res) => {
+authRouter.get('/signup', (req, res) => {
     res.render('signup', { authenticated : req.session.isAuthenticated })
 })
 
-authRouter.get('/login', protectRoute, (req, res) => {
+authRouter.get('/login', (req, res) => {
     res.render('login', { authenticated : req.session.isAuthenticated })
 })
 

@@ -5,13 +5,17 @@ import { hashPassword, comparePassword } from '../utils/hash.js'
 // import jwt from 'jsonwebtoken'
 
 export const signup = async (req, res, next) => {
-    const { name, email, password } = req.body;
+    const { name, email, password } = req.body; 
     if(!name || !email || !password) return next(createError(400, 'Please provide all fields'));
+    
     const userExists = usersdb.find((user) => user.email === email);
     if(userExists) return next(createError(409, 'User already exists'));
+    
     const newId = uuidv4();
+    
     const isDuplicateId = usersdb.some((user) => user.id === newId);
     if(isDuplicateId) return next(createError(500, 'An error occured'));
+    
     const hashedPassword = await hashPassword(password);
     const newUser = {
         id: newId,
@@ -30,11 +34,15 @@ export const signup = async (req, res, next) => {
 export const login = async (req, res, next) => {
     const { email, password } = req.body
     if(!email || !password) return next(createError(400, 'Please provide all fields'))
+    
     const user = usersdb.find((user) => user.email === email)
     if(!user) next(createError(500, 'User with such email does not exist'))
+    
     const comparePasswords = await comparePassword(password, user.password)
     if(!comparePasswords) return next(createError(500, 'Password is not correct'))
+    
     req.session.isAuthenticated = true
+    
     res.redirect('/')
 }
 
